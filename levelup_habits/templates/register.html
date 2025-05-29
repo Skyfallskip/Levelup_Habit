@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    {% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cadastro - Habit Tracker</title>
+    <link rel="stylesheet" href="{% static 'css/login_register.css' %}"/>
+</head>
+<body>
+    <div class="container">
+        <h2>Cadastro</h2>
+        <form id="registerForm">
+            <label for="username">Usuário</label>
+            <input type="text" id="username" name="username" required />
+            
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" required />
+            
+            <label for="passwordConfirm">Confirmar Senha</label>
+            <input type="password" id="passwordConfirm" name="passwordConfirm" required />
+            
+            <button type="submit">Cadastrar</button>
+        </form>
+        <p>Já tem conta? <a href="login.html">Faça login aqui</a></p>
+        <div id="message"></div>
+    </div>
+
+    <script src="{% static 'register.js' %}"></script>
+</body>
+</html>

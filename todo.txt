@@ -1,0 +1,54 @@
+--> Principal
+
+- Conectar login e register com backend
+- Dashboard ( home page )
+- Perfil
+- Configurações
+
+--> Extra
+
+- Funcionalidades:
+
+Criar equipes/grupos — cada time tem um nome, descrição, talvez uma imagem/avatar.
+
+Convidar amigos para o time — por email ou username.
+
+Aceitar convite — os convidados confirmam o convite.
+
+Compartilhar hábitos no grupo — os membros podem ver e marcar os hábitos do time.
+
+Comentários / chat simples (futuramente) — para aquela interação básica.
+
+Ranking do grupo — mostrar quem está mais dedicado dentro da equipe.
+
+- Página de equipes
+
+- Pagina de detalhes da equipe
+
+- Pagina de CRUD equipes
+
+- chat
+
+- streaks
+
+- sistema de convites
+
+- Leaderboard ( talvez )
+
+- Notificações push no app web / mobile
+
+- Integração com app mobile
+
+- Gamificação mais avançada (badges, conquistas, níveis)
+
+- Analytics e insights pessoais e para o grupo
+
+- Segurança, UX polido, responsividade, colaboração real, e monitoramento/estatísticas.
+
+- Documentação e onboarding
+
+- Histórico e estatísticas
+
+- Gestão de permissões
+
+- Persistência e sincronização de dados

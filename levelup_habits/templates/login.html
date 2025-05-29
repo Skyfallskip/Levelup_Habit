@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    {% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login - Habit Tracker</title>
+    <link rel="stylesheet" href="{% static 'css/login_register.css' %}" />
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Usuário</label>
+            <input type="text" id="username" name="username" required />
+            
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" required />
+            
+            <button type="submit">Entrar</button>
+        </form>
+        <p>Não tem conta? <a href="register.html">Cadastre-se aqui</a></p>
+        <div id="message"></div>
+    </div>
+
+    <script src="{% static 'login.js' %}"></script>
+</body>
+</html>
