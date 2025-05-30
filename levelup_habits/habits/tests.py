@@ -11,7 +11,7 @@ class HabitTests(APITestCase):
         cls.user = User.objects.create_user(username='testuser', password='12345678')
 
     def setUp(self):
-        # Faz login aqui, pois self.client existe somente no setUp (instância)
+        # Faz login aqui, pq self.client existe somente no setUp
         response = self.client.post(reverse('token_obtain_pair'), {
             'username': 'testuser', 'password': '12345678'
         }, format='json')
@@ -65,7 +65,7 @@ class HabitTests(APITestCase):
         self.assertEqual(Habit.objects.count(), 0)
 
     def test_create_habit_without_auth(self):
-        self.client.credentials()  # Remove token
+        self.client.credentials()  # Remove token ( pra nao bugar tudo)
         url = reverse('habit-list')
         response = self.client.post(url, self.habit_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
