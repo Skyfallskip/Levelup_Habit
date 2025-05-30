@@ -40,12 +40,12 @@ jobs:
 
       - name: Run migrations
         run: |
-          cd /workspaces/Habit_Tracker/levelup_habits
+          cd levelup_habits
           python manage.py makemigrations
           python manage.py migrate
 
       - name: Run tests
         run: |
-          cd /workspaces/Habit_Tracker/levelup_habits
+          cd levelup_habits
           python manage.py test
           
