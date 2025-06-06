@@ -1,4 +1,3 @@
-/* Reset básico */
 * {
   margin: 0;
   padding: 0;
@@ -7,27 +6,63 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Fundo geral */
+
 body {
-  background-color: #121212;
+  background-color: #17153B;
   color: #e0e0e0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  margin: 0;
 }
 
-/* Caixa do login */
-.login-container {
+.main-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #bb86fc;
+  margin-bottom: 2.5rem;
+  position: static;
+  left: unset;
+  top: unset;
+  transform: none;
+  font-weight: 700;
+  width: auto;
+  z-index: 2;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #c9a4f7;
+  margin-top: 0.7rem;
+  text-align: center;
+  font-weight: 400;
+}
+
+.container_outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container_inner {
   background-color: #1e1e1e;
   padding: 2.5rem 3rem;
-  border-radius: 10px;
+  border-radius: 40px;
   box-shadow: 0 0 10px #000000aa;
   width: 350px;
+  height: 500px;
+  position: relative;
+  z-index: 3;
+  margin-left: 0;
 }
 
-/* Título */
-.login-container h1 {
+.container_inner h1 {
   text-align: center;
   margin-bottom: 1.8rem;
   font-weight: 700;
@@ -35,7 +70,6 @@ body {
   letter-spacing: 1px;
 }
 
-/* Inputs */
 input[type="text"],
 input[type="password"],
 input[type="email"] {
@@ -55,7 +89,6 @@ input[type="email"]::placeholder {
   color: #888;
 }
 
-/* Botão */
 button {
   width: 100%;
   padding: 0.8rem 1rem;
@@ -75,7 +108,6 @@ button:hover {
   background-color: #9a63d7;
 }
 
-/* Links (exemplo: cadastro) */
 a {
   color: #bb86fc;
   text-decoration: none;
@@ -86,5 +118,29 @@ a {
 }
 
 a:hover {
+  text-decoration: underline;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.register-link span {
+  display: block;
+  color: #e0e0e0;
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+}
+
+.register-link a {
+  color: #bb86fc;
+  text-decoration: none;
+  font-size: 0.95rem;
+  margin-top: 0;
+  display: inline-block;
+}
+
+.register-link a:hover {
   text-decoration: underline;
 }
