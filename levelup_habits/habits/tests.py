@@ -82,6 +82,7 @@ class CompletionTests(APITestCase):
         response = self.client.post(reverse('token_obtain_pair'), {
             'username': 'testuser', 'password': '12345678'
         }, format='json')
+        self.user = User.objects.create_user(username="testuser", password="testpass")
         self.token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
         self.habit = Habit.objects.create(
@@ -94,14 +95,18 @@ class CompletionTests(APITestCase):
 
     def test_mark_completion(self):
         url = reverse('completion-list')
-        data = {'habit': self.habit.id}
-        response = self.client.post(url, data, format='json')
+        date = {'habit': self.habit.id}
+        response = self.client.post('/api/completions/', {
+            "habit": self.habit.id,
+            "date": date.today().isoformat(),
+            "user": self.user.id
+            }, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Completion.objects.count(), 1)
         self.assertEqual(Completion.objects.get().habit, self.habit)
 
     def test_list_completions(self):
-        Completion.objects.create(habit=self.habit, date=date.today())
+        Completion.objects.create(habit=self.habit, date=date.today(), user=self.user)
         url = reverse('completion-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
