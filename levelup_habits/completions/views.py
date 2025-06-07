@@ -1,5 +1,3 @@
-# completions/views.py
-
 from rest_framework import viewsets, permissions
 from .models import Completion
 from .serializers import CompletionSerializer
@@ -17,7 +15,5 @@ class CompletionViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         completion = serializer.save(user=self.request.user)
         habit = completion.habit
-
-        # Atualiza XP do usuário
         profile, created = UserProfile.objects.get_or_create(user=self.request.user)
         profile.add_xp(habit.xp)

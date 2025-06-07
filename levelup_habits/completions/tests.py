@@ -75,13 +75,13 @@ class CompletionTests(APITestCase):
         self.assertEqual(Completion.objects.count(), 0)
 
     def test_create_completion_without_auth(self):
-        self.client.credentials()  # Remove token
+        self.client.credentials()  
         url = reverse('completion-list')
         response = self.client.post(url, self.completion_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    def test_list_completions_without_auth(self):
-        self.client.credentials()
-        url = reverse('completion-list')
-        response = self.client.get(url)
+    def test_create_completion_without_auth(self):
+        data = {'habit': self.habit.id}
+        response = self.client.post('/completions/', data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+

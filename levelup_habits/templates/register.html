@@ -5,27 +5,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cadastro - Habit Tracker</title>
-    <link rel="stylesheet" href="{% static 'css/login_register.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
 </head>
 <body>
-    <div class="container">
-        <h2>Cadastro</h2>
-        <form id="registerForm">
-            <label for="username">Usuário</label>
-            <input type="text" id="username" name="username" required />
-            
-            <label for="password">Senha</label>
-            <input type="password" id="password" name="password" required />
-            
-            <label for="passwordConfirm">Confirmar Senha</label>
-            <input type="password" id="passwordConfirm" name="passwordConfirm" required />
-            
-            <button type="submit">Cadastrar</button>
-        </form>
-        <p>Já tem conta? <a href="login.html">Faça login aqui</a></p>
-        <div id="message"></div>
+    <div class="main-center">
+        <div class="title">
+            Level Up Habits
+            <p class="subtitle">Crie sua conta e comece a evoluir seus hábitos!</p>
+        </div>
+        <div class="container_outer">
+            <div class="container_inner">
+                <h1>Cadastro</h1>
+                <form id="registerForm">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" name="username" required />
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required />
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required minlength="8" />
+                    <label for="passwordConfirm">Confirme a senha</label>
+                    <input type="password" id="passwordConfirm" name="passwordConfirm" required minlength="8" />
+                    <button type="submit">Registrar</button>
+                </form>
+                <div class="register-link">
+                    <span>Já tem uma conta?</span>
+                    <a href="login.html">Faça login aqui</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="{% static 'register.js' %}"></script>
+    <script src="{% static 'js/register.js' %}"></script>
 </body>
 </html>
