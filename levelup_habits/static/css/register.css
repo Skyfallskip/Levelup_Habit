@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background-color: #17153B;
+  color: #e0e0e0;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.main-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #bb86fc;
+  margin-bottom: 2.5rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #c9a4f7;
+  margin-top: 0.7rem;
+  text-align: center;
+  font-weight: 400;
+}
+
+.container_outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.container_inner {
+  background-color: #1e1e1e;
+  padding: 2.5rem 3rem;
+  border-radius: 40px;
+  box-shadow: 0 0 10px #000000aa;
+  width: 350px;
+  position: relative;
+  z-index: 3;
+}
+
+.container_inner h1 {
+  text-align: center;
+  margin-bottom: 1.8rem;
+  font-weight: 700;
+  color: #bb86fc;
+  letter-spacing: 1px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  margin-bottom: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #2c2c2c;
+  color: #eee;
+  font-size: 1rem;
+}
+
+input::placeholder {
+  color: #888;
+}
+
+button {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: #bb86fc;
+  color: #121212;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 0.6rem;
+  box-shadow: 0 4px 8px #bb86fc80;
+}
+
+button:hover {
+  background-color: #9a63d7;
+}
+
+a {
+  color: #bb86fc;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.login-link span {
+  display: block;
+  color: #e0e0e0;
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+}
+
+.login-link a {
+  color: #bb86fc;
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: inline-block;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 2.5rem;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 30%;
+  right: 0.7rem;
+  transform: translateY(-30%);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.toggle-password:hover {
+  color: #9a63d7;
+}

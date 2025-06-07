@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    {% load static %}
+{% load static %}
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cadastro - Habit Tracker</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/register.css' %}" />
 </head>
 <body>
     <div class="main-center">
         <div class="title">
             Level Up Habits
-            <p class="subtitle">Crie sua conta e comece a evoluir seus hábitos!</p>
+            <p class="subtitle">Cadastre-se e comece sua jornada de evolução!</p>
         </div>
         <div class="container_outer">
             <div class="container_inner">
@@ -19,22 +19,49 @@
                 <form id="registerForm">
                     <label for="username">Usuário</label>
                     <input type="text" id="username" name="username" required />
+
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required />
+
                     <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" required minlength="8" />
-                    <label for="passwordConfirm">Confirme a senha</label>
-                    <input type="password" id="passwordConfirm" name="passwordConfirm" required minlength="8" />
-                    <button type="submit">Registrar</button>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" required />
+                        <img src="{% static 'images/hide.png' %}" 
+                             alt="Mostrar senha" 
+                             class="toggle-password" 
+                             onclick="togglePasswordVisibility('password', this)" />
+                    </div>
+
+                    <label for="confirm-password">Confirmar Senha</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirm-password" name="confirm_password" required />
+                        <img src="{% static 'images/hide.png' %}" 
+                             alt="Mostrar senha" 
+                             class="toggle-password" 
+                             onclick="togglePasswordVisibility('confirm-password', this)" />
+                    </div>
+
+                    <button type="submit">Cadastrar</button>
                 </form>
-                <div class="register-link">
+
+                <div class="login-link">
                     <span>Já tem uma conta?</span>
-                    <a href="login.html">Faça login aqui</a>
+                    <a href="{% url 'login' %}">Entre aqui</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="{% static 'js/register.js' %}"></script>
+    <script>
+        function togglePasswordVisibility(inputId, iconElement) {
+            const input = document.getElementById(inputId);
+            const isVisible = input.type === 'text';
+
+            input.type = isVisible ? 'password' : 'text';
+            iconElement.src = isVisible
+                ? "{% static 'images/hide.png' %}"
+                : "{% static 'images/view.png' %}";
+        }
+    </script>
 </body>
 </html>
