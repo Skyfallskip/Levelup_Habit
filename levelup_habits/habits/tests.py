@@ -4,6 +4,7 @@ from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from .models import Habit
 from completions.models import Completion
+from datetime import date
 
 class HabitTests(APITestCase):
 
@@ -100,7 +101,7 @@ class CompletionTests(APITestCase):
         self.assertEqual(Completion.objects.get().habit, self.habit)
 
     def test_list_completions(self):
-        Completion.objects.create(habit=self.habit)
+        Completion.objects.create(habit=self.habit, date=date.today())
         url = reverse('completion-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
