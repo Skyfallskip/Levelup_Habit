@@ -1,41 +1,69 @@
 document.getElementById('loginForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+    event.preventDefault(); // impede o reload do form
 
-    const username = this.username.value.trim();
-    const password = this.password.value.trim();
-    const message = document.getElementById('message');
-    message.textContent = '';
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+
+    // Limpa mensagens antigas
+    clearMessage();
 
     if (!username || !password) {
-        message.textContent = 'Por favor, preencha todos os campos.';
+        showMessage('Preencha usuário e senha', 'error');
         return;
     }
 
     try {
-        // Aqui você chamaria a API do seu backend para autenticação
-        // Exemplo usando fetch:
-        const response = await fetch('/api/token/', {
+        const response = await fetch('/api/token/', {  // ajuste a URL se for diferente no seu backend
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username, password}),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
         });
 
+        const data = await response.json();
+
         if (response.ok) {
-            const data = await response.json();
-            // Salva o token no localStorage para usar depois
+            // Login bem-sucedido
             localStorage.setItem('access_token', data.access);
             localStorage.setItem('refresh_token', data.refresh);
-            message.style.color = 'green';
-            message.textContent = 'Login realizado com sucesso! Redirecionando...';
 
-            // Redireciona para a página principal depois de 1.5s
+            showMessage('Login realizado com sucesso! Redirecionando...', 'success');
+
+            // Depois de 1 segundo, redireciona para a página principal (ajuste conforme sua app)
             setTimeout(() => {
-                window.location.href = 'dashboard.html'; // ou a página principal
-            }, 1500);
+                window.location.href = '/dashboard/';  // ou qualquer página que você queira
+            }, 1000);
+
         } else {
-            message.textContent = 'Usuário ou senha inválidos.';
+            // Login falhou: mostra erro retornado da API
+            const errorMsg = data.detail || 'Usuário ou senha incorretos';
+            showMessage(errorMsg, 'error');
         }
     } catch (error) {
-        message.textContent = 'Erro na conexão com o servidor.';
+        showMessage('Erro ao conectar ao servidor', 'error');
+        console.error('Login error:', error);
     }
 });
+
+function showMessage(message, type) {
+    let msgDiv = document.getElementById('messageDiv');
+    if (!msgDiv) {
+        msgDiv = document.createElement('div');
+        msgDiv.id = 'messageDiv';
+        msgDiv.style.marginTop = '1rem';
+        msgDiv.style.textAlign = 'center';
+        msgDiv.style.fontWeight = '600';
+        document.querySelector('.container_inner').appendChild(msgDiv);
+    }
+
+    msgDiv.textContent = message;
+    msgDiv.style.color = (type === 'error') ? '#ff5555' : '#55ff55';
+}
+
+function clearMessage() {
+    const msgDiv = document.getElementById('messageDiv');
+    if (msgDiv) {
+        msgDiv.textContent = '';
+    }
+}
