@@ -1,41 +1,45 @@
-document.getElementById('registerForm').addEventListener('submit', async function(event) {
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('registerForm');
+
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const username = this.username.value.trim();
-    const password = this.password.value.trim();
-    const passwordConfirm = this.passwordConfirm.value.trim();
-    const message = document.getElementById('message');
-    message.textContent = '';
-
-    if (!username || !password || !passwordConfirm) {
-        message.textContent = 'Por favor, preencha todos os campos.';
-        return;
-    }
+    const username = form.username.value.trim();
+    const email = form.email.value.trim();
+    const password = form.password.value;
+    const passwordConfirm = form.passwordConfirm.value;
 
     if (password !== passwordConfirm) {
-        message.textContent = 'As senhas não coincidem.';
-        return;
+      alert('As senhas não coincidem!');
+      return;
+    }
+
+    if (password.length < 8) {
+      alert('A senha precisa ter no mínimo 8 caracteres.');
+      return;
     }
 
     try {
-        // Chamada para criar o usuário no backend
-        const response = await fetch('/api/register/', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username, password}),
-        });
+      const response = await fetch('/api/register/', {  // ajuste a URL para seu endpoint de registro
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
 
-        if (response.ok) {
-            message.style.color = 'green';
-            message.textContent = 'Cadastro realizado com sucesso! Você será redirecionado para login.';
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
-        } else {
-            const data = await response.json();
-            message.textContent = data.detail || 'Erro ao cadastrar usuário.';
-        }
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(errorData.detail || 'Erro ao registrar, verifique os dados.');
+        return;
+      }
+
+      alert('Cadastro realizado com sucesso! Agora faça login.');
+      window.location.href = 'login.html';
+
     } catch (error) {
-        message.textContent = 'Erro na conexão com o servidor.';
+      alert('Erro na conexão. Tente novamente mais tarde.');
+      console.error('Registro error:', error);
     }
+  });
 });

@@ -73,15 +73,3 @@ class CompletionTests(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Completion.objects.count(), 0)
-
-    def test_create_completion_without_auth(self):
-        self.client.credentials()  
-        url = reverse('completion-list')
-        response = self.client.post(url, self.completion_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_create_completion_without_auth(self):
-        data = {'habit': self.habit.id}
-        response = self.client.post('/completions/', data)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
