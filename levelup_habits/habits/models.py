@@ -26,9 +26,7 @@ class Habit(models.Model):
         return f"{self.title} ({self.user.username})"
 
 
-class Completion(models.Model):
-        habit = models.ForeignKey(Habit, on_delete=models.CASCADE)
-        date = models.DateField(auto_now_add=True)
+
 
 
 

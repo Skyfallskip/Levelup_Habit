@@ -1,5 +1,6 @@
 from rest_framework import viewsets, permissions
-from .models import Habit, Completion
+from .models import Habit
+from completions.models import Completion
 from .serializers import HabitSerializer, CompletionSerializer
 
 class HabitViewSet(viewsets.ModelViewSet):

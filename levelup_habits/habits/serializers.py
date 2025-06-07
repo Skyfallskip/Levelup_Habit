@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Habit, Completion
+from .models import Habit
+from completions.models import Completion
 
 class HabitSerializer(serializers.ModelSerializer):
     class Meta:
