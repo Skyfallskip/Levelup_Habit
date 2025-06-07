@@ -6,6 +6,6 @@ router = DefaultRouter()
 router.register(r'completions', CompletionViewSet, basename='completion')
 
 urlpatterns = [
-    path('', include('rest_framework.urls')),
+    path('', include('router.urls')),
 ]
 
