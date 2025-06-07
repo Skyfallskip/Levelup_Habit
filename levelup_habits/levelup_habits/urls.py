@@ -18,6 +18,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView, TemplateView
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +29,21 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/api/')),
     path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
     path('register/', TemplateView.as_view(template_name='register.html'), name='register'),
+    
+]
+
+get_schema_view = get_schema_view(
+   openapi.Info(
+      title="LevelUp Habit API",
+      default_version='v1',
+      description="Documentação interativa da API de hábitos com gamificação",
+      contact=openapi.Contact(email="contato.mateuslirio@gmail.com"),
+   ),
+   public=True,
+   permission_classes=[permissions.AllowAny],
+)
+
+urlpatterns += [
+    path('swagger/', get_schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', get_schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
