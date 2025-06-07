@@ -13,10 +13,11 @@ class HabitTests(APITestCase):
         cls.user = User.objects.create_user(username='testuser', password='12345678')
 
     def setUp(self):
-        # Faz login aqui, pq self.client existe somente no setUp
         response = self.client.post(reverse('token_obtain_pair'), {
-            'username': 'testuser', 'password': '12345678'
+            'username': 'testuser',
+            'password': '12345678'
         }, format='json')
+
         self.token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
         self.habit_data = {
@@ -26,7 +27,7 @@ class HabitTests(APITestCase):
             'xp_reward': 10,
             'is_active': True,
         }
-    
+
     def test_create_habit(self):
         url = reverse('habit-list') 
         response = self.client.post(url, self.habit_data, format='json')
@@ -67,10 +68,11 @@ class HabitTests(APITestCase):
         self.assertEqual(Habit.objects.count(), 0)
 
     def test_create_habit_without_auth(self):
-        self.client.credentials()  # Remove token ( pra nao bugar tudo)
+        self.client.credentials()  # Remove o token
         url = reverse('habit-list')
         response = self.client.post(url, self.habit_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class CompletionTests(APITestCase):
 
@@ -80,11 +82,13 @@ class CompletionTests(APITestCase):
 
     def setUp(self):
         response = self.client.post(reverse('token_obtain_pair'), {
-            'username': 'testuser', 'password': '12345678'
+            'username': 'testuser',
+            'password': '12345678'
         }, format='json')
-        self.user = User.objects.create_user(username="testuser", password="testpass")
+
         self.token = response.data['access']
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
+
         self.habit = Habit.objects.create(
             user=self.user,
             title='Ler livros',
@@ -95,12 +99,11 @@ class CompletionTests(APITestCase):
 
     def test_mark_completion(self):
         url = reverse('completion-list')
-        date = {'habit': self.habit.id}
-        response = self.client.post('/api/completions/', {
+        response = self.client.post(url, {
             "habit": self.habit.id,
             "date": date.today().isoformat(),
             "user": self.user.id
-            }, format='json')
+        }, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Completion.objects.count(), 1)
         self.assertEqual(Completion.objects.get().habit, self.habit)
@@ -111,6 +114,7 @@ class CompletionTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
+
 
 class AuthTests(APITestCase):
 
@@ -131,7 +135,7 @@ class AuthTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_access_protected_endpoint_with_invalid_token(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + 'invalidtoken')
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer invalidtoken')
         url = reverse('habit-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
