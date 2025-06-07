@@ -4,3 +4,4 @@ djangorestframework-simplejwt
 python-dotenv
 django-cors-headers
 Pillow
+drf-yasg>=1.21.5
