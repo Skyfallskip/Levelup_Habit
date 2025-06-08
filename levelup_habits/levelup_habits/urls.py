@@ -23,14 +23,17 @@ from drf_yasg import openapi
 from rest_framework import permissions
 
 urlpatterns = [
+    
+    path('api/accounts/', include('accounts.urls')),
+    path('api/habits/', include('habits.urls')),
+    path('api/core/', include('core.urls')),
+
     path('admin/', admin.site.urls),
-    path('api/', include('habits.urls')),
-    path('api/auth/', include('core.urls')),
-    path('', RedirectView.as_view(url='/api/')),
+    
     path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
     path('register/', TemplateView.as_view(template_name='register.html'), name='register'),
-    
 ]
+
 
 get_schema_view = get_schema_view(
    openapi.Info(
