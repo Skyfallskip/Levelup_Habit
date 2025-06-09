@@ -1,3 +1,4 @@
+console.log('Register script loaded');
 function showAlert(message, isSuccess = false, type = '') {
   const alertBox = document.getElementById('customAlert');
   const alertMsg = document.getElementById('alertMessage');
@@ -27,17 +28,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const username = form.username.value.trim();
     const email = form.email.value.trim();
     const password = form.password.value;
-    const passwordConfirm = form.confirm_password.value;
+    const confirmPassword = form.confirm_password.value;
+    const submitButton = form.querySelector('button[type="submit"]');
 
-    if (password !== passwordConfirm) {
-    showAlert('As senhas não coincidem!');
-    return;
-  }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (password.length < 8) {
-    showAlert('A senha precisa ter no mínimo 8 caracteres.');
-    return;
-  }
+    if (password !== confirmPassword) {
+      showAlert('As senhas não coincidem!');
+      return;
+    }
+
+    if (password.length < 8) {
+      showAlert('A senha precisa ter no mínimo 8 caracteres.');
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      showAlert('Digite um email válido.');
+      return;
+    }
+
+    submitButton.disabled = true;
 
     try {
       const response = await fetch('/api/register/', {
@@ -51,28 +62,37 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Erro da API:', errorData);
-        alert(errorData.detail || 'Erro ao registrar, verifique os dados.');
+        showAlert(errorData.detail || 'Erro ao registrar, verifique os dados.');
+        submitButton.disabled = false;
         return;
       }
 
       showAlert('Cadastro realizado com sucesso! Agora faça login.', true);
-      window.location.href = loginUrl;
+      setTimeout(() => window.location.href = loginUrl, 1000);
 
     } catch (error) {
       showAlert('Erro na conexão. Tente novamente mais tarde.', false, 'connection-error');
-      console.error('Registro error:', error);
+      console.error('Erro de conexão:', error);
+    } finally {
+      submitButton.disabled = false;
     }
+  });
+
+  document.querySelectorAll('.toggle-password').forEach((icon) => {
+    icon.addEventListener('click', () => {
+      const inputId = icon.getAttribute('data-target');
+      togglePasswordVisibility(inputId, icon);
+    });
   });
 });
 
-function togglePasswordVisibility(iconElement) {
-    const inputId = iconElement.getAttribute('data-target');
-    const input = document.getElementById(inputId);
-    const isVisible = input.type === 'text';
+function togglePasswordVisibility(inputId, iconElement) {
+  const input = document.getElementById(inputId);
+  const isVisible = input.type === 'text';
 
-    input.type = isVisible ? 'password' : 'text';
-    iconElement.src = isVisible 
-        ? "/static/images/hide.png" 
-        : "/static/images/view.png";
-    iconElement.alt = isVisible ? "Mostrar senha" : "Ocultar senha";
+  input.type = isVisible ? 'password' : 'text';
+  iconElement.src = isVisible 
+      ? "/static/images/hide.png" 
+      : "/static/images/view.png";
+  iconElement.alt = isVisible ? "Mostrar senha" : "Ocultar senha";
 }

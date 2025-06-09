@@ -21,6 +21,7 @@
       <div class="container_inner">
         <h2>Cadastro</h2>
         <form id="registerForm" method="post" action="{% url 'register' %}">
+          {% csrf_token %}
           <label for="username">Usuário</label>
           <input type="text" id="username" name="username" required />
 
@@ -30,13 +31,14 @@
           <label for="password">Senha</label>
           <div class="password-wrapper">
             <input type="password" id="password" name="password" required />
-            <img src="{% static 'images/hide.png' %}" alt="Mostrar senha" class="toggle-password" onclick="togglePasswordVisibility('password', this)" />
+            <img src="{% static 'images/hide.png' %}" alt="Mostrar senha" class="toggle-password" data-target="password" />
           </div>
 
-          <label for="confirm-password">Confirmar Senha</label>
+          <label for="confirm_password">Confirmar Senha</label>
           <div class="password-wrapper">
-            <input type="password" id="confirm-password" name="confirm_password" required />
-            <img src="{% static 'images/hide.png' %}" alt="Mostrar senha" class="toggle-password" onclick="togglePasswordVisibility('confirm-password', this)" />
+            <input type="password" id="confirm_password" name="confirm_password" required />
+            <img src="{% static 'images/hide.png' %}" alt="Mostrar senha" class="toggle-password" data-target="confirm_password" />
+
           </div>
 
           <button type="submit">Cadastrar</button>
@@ -53,7 +55,6 @@
   <div id="customAlert" class="alert">
     <p id="alertMessage"></p>
   </div>
-
   <script>
     const loginUrl = "{% url 'login' %}";
   </script>
