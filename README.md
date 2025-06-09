@@ -40,6 +40,8 @@ Publicar API e frontend em produção com Docker e CI/CD
 Para ampliar ainda mais o alcance do LevelUp Habit, está nos planos criar um app de celular que se conectará diretamente à API do backend. Isso vai permitir aos usuários acompanhar seus hábitos e marcar completions em qualquer lugar, com uma experiência nativa e fluida, tanto para Android quanto para iOS.
 
 - Contato
+linktr.ee/Mateus_lirio
+
 Feito por Mateus, estudante de informática apaixonado por programação e engenharia de software.
 
 Quer trocar uma ideia, sugerir algo ou contribuir? Me chama lá no GitHub! ou entre em contato pelo email: contato.mateuslirio@gmail.com
