@@ -1,6 +1,5 @@
 --> Principal
 
-- Conectar login e register com backend
 - Dashboard ( home page )
 - Perfil
 - Configurações
