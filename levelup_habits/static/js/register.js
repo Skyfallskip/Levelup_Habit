@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     submitButton.disabled = true;
 
     try {
-      const response = await fetch('/api/register/', {
+      const response = await fetch('/api/accounts/signup/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

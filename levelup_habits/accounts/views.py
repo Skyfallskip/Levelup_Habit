@@ -4,7 +4,12 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework.permissions import AllowAny
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -24,6 +29,9 @@ class RegisterView(APIView):
 
         return Response({'detail': 'Usuário criado com sucesso!'}, status=status.HTTP_201_CREATED)
 
+from django.contrib.auth import login
+
+@method_decorator(csrf_exempt, name='dispatch')
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
@@ -34,6 +42,23 @@ class LoginView(APIView):
         user = authenticate(username=username, password=password)
 
         if user is not None:
+            # Log the user in to create the session cookie
+            login(request._request, user)  # Use the underlying Django HttpRequest
+
             return Response({"detail": "Login bem-sucedido!"})
         else:
             return Response({"detail": "Credenciais inválidas."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        
+def custom_login(request):
+    if request.method == 'POST':
+
+        user = authenticate(...)
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')  
+        
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

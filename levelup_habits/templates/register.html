@@ -20,7 +20,7 @@
     <div class="form-column">
       <div class="container_inner">
         <h2>Cadastro</h2>
-        <form id="registerForm" method="post" action="{% url 'register' %}">
+        <form id="registerForm" method="post" action="{% url 'api-register' %}">
           {% csrf_token %}
           <label for="username">Usuário</label>
           <input type="text" id="username" name="username" required />

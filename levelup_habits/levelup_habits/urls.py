@@ -21,16 +21,18 @@ from django.views.generic import RedirectView, TemplateView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
+from accounts.views import RegisterView
 
 urlpatterns = [
     
+    path('api/register/', RegisterView.as_view(), name='api-register'),
     path('api/accounts/', include('accounts.urls')),
     path('api/habits/', include('habits.urls')),
     path('api/core/', include('core.urls')),
 
     path('admin/', admin.site.urls),
     
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', include('core.urls')),
     path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
     path('register/', TemplateView.as_view(template_name='register.html'), name='register'),
 ]

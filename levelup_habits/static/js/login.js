@@ -1,3 +1,22 @@
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
+
 function showMessage(message, type) {
     let msgDiv = document.getElementById('messageDiv');
     if (!msgDiv) {
@@ -20,7 +39,6 @@ function clearMessage() {
     }
 }
 
-
 document.getElementById('loginForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
@@ -35,31 +53,29 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     }
 
     try {
-        const response = await fetch('/api/token/', { 
+        const response = await fetch('/api/accounts/logar/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
             },
             body: JSON.stringify({ username, password }),
         });
 
         const data = await response.json();
 
-        if (response.ok) {
-            // Login bem-sucedido
+        if (response.ok && data.access) {
             localStorage.setItem('access_token', data.access);
             localStorage.setItem('refresh_token', data.refresh);
 
             showMessage('Login realizado com sucesso! Redirecionando...', 'success');
 
             setTimeout(() => {
-                window.location.href = '/dashboard/';
+                window.location.href = '/';
             }, 1000);
-
-        } else {
-            const errorMsg = data.detail || 'Usuário ou senha incorretos';
-            showMessage(errorMsg, 'error');
-        }
+            } else {
+            showMessage(data.detail || 'Usuário ou senha incorretos', 'error');
+    }
     } catch (error) {
         showMessage('Erro ao conectar ao servidor', 'error');
         console.error('Login error:', error);
