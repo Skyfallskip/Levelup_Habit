@@ -8,5 +8,5 @@ from . import views
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), 
-    path('', views.dashboard, name='dashboard'),
+    path('', views.dashboard_view, name='dashboard'),
 ]

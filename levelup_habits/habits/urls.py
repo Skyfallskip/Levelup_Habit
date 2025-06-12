@@ -4,7 +4,7 @@ from .views import HabitViewSet,CompletionViewSet
 
 
 router = DefaultRouter()
-router.register(r'habits', HabitViewSet, basename='habit')
+router.register(r'', HabitViewSet, basename='habit')
 router.register(r'completions', CompletionViewSet, basename='completion')
 
 urlpatterns = router.urls
