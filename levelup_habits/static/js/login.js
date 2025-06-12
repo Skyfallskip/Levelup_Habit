@@ -1,10 +1,10 @@
+// Função para pegar o token CSRF do cookie
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
             if (cookie.startsWith(name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
@@ -16,7 +16,7 @@ function getCookie(name) {
 
 const csrftoken = getCookie('csrftoken');
 
-
+// Função para mostrar mensagens
 function showMessage(message, type) {
     let msgDiv = document.getElementById('messageDiv');
     if (!msgDiv) {
@@ -32,6 +32,7 @@ function showMessage(message, type) {
     msgDiv.style.color = (type === 'error') ? '#ff5555' : '#55ff55';
 }
 
+// Limpa mensagem anterior
 function clearMessage() {
     const msgDiv = document.getElementById('messageDiv');
     if (msgDiv) {
@@ -39,6 +40,7 @@ function clearMessage() {
     }
 }
 
+// Manipulador de envio do formulário de login
 document.getElementById('loginForm').addEventListener('submit', async function(event) {
     event.preventDefault();
 
@@ -65,17 +67,20 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const data = await response.json();
 
         if (response.ok && data.access) {
+            // Salva os tokens no localStorage
             localStorage.setItem('access_token', data.access);
             localStorage.setItem('refresh_token', data.refresh);
 
+            // Exibe mensagem e redireciona
             showMessage('Login realizado com sucesso! Redirecionando...', 'success');
 
             setTimeout(() => {
                 window.location.href = '/';
             }, 1000);
-            } else {
+        } else {
             showMessage(data.detail || 'Usuário ou senha incorretos', 'error');
-    }
+        }
+
     } catch (error) {
         showMessage('Erro ao conectar ao servidor', 'error');
         console.error('Login error:', error);

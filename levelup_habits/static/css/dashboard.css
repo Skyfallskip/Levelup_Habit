@@ -115,7 +115,7 @@ header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-color: #1e1e2e;
+  background-color: #1c1c33;
   padding: 1rem 2rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
   gap: 1rem;

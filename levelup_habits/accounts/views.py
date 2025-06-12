@@ -31,6 +31,15 @@ class RegisterView(APIView):
 
 from django.contrib.auth import login
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate, login
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
 @method_decorator(csrf_exempt, name='dispatch')
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -42,14 +51,18 @@ class LoginView(APIView):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            # Log the user in to create the session cookie
-            login(request._request, user)  # Use the underlying Django HttpRequest
+            login(request._request, user)  # Sessão (caso esteja usando isso)
 
-            return Response({"detail": "Login bem-sucedido!"})
-        else:
-            return Response({"detail": "Credenciais inválidas."}, status=status.HTTP_401_UNAUTHORIZED)
+            # Gera tokens JWT
+            refresh = RefreshToken.for_user(user)
 
-        
+            return Response({
+                "access": str(refresh.access_token),
+                "refresh": str(refresh)
+            })
+
+        return Response({"detail": "Credenciais inválidas."}, status=status.HTTP_401_UNAUTHORIZED)
+
 def custom_login(request):
     if request.method == 'POST':
 

@@ -31,11 +31,13 @@
         </div>
     </div>
 
-    <script src="{% static 'js/login.js' %}">   
-        const token = localStorage.getItem('access_token');
-        if (!token) {
-            window.location.href = '/login/';
-        }
-    </script>
+<script src="{% static 'js/login.js' %}"></script>
+<script>
+    const token = localStorage.getItem('access_token');
+    if (token) {
+        // Se o usuário já está logado, redireciona para a home
+        window.location.href = '/';
+    }
+</script>
 </body>
 </html>

@@ -15,8 +15,8 @@
       <h2 class="logo"><i class="fa-sharp fa-solid fa-angles-up"></i> LevelUp Habits</h2>
       <nav>
         <a href="#" class="active"><i class="fa-sharp fa-solid fa-house"></i> Início</a>
-        <a href="#"><i class="fa-sharp fa-solid fa-user-group"></i> Amigos</a>
-        <a href="#"><i class="fa-sharp fa-solid fa-users"></i> Equipe</a>
+        <a href="#"><i class="fa-sharp fa-solid fa-user-group"></i> Amigos - Soon</a>
+        <a href="#"><i class="fa-sharp fa-solid fa-users"></i> Equipe - Soon</a>
         <a href="#"><i class="fa-sharp fa-solid fa-gear"></i> Configurações</a>
       </nav>
     </aside>
@@ -27,27 +27,32 @@
         <div class="user-actions">
             <a href="#"><i class="fa-sharp fa-solid fa-bell"></i> Notificações</a>
             <a href="#"><i class="fa-sharp fa-solid fa-user"></i> Perfil</a>
-            <img src="{% static 'images/notification.png' %}" alt="Notificações" class="icon" />
+            <img src="{% static 'images/placeholder.png' %}" alt="user_profile_picture" class="icon" />
             <span class="username">{{ user.username }}</span>
             <a href="{% url 'logout_view'%}" class="logout-btn">Sair</a>
         </div>
       </header>
 
       <main class="main-content">
-        <h1>Bem-vindo de volta, {{ user.first_name }}!</h1>
+        <h1>Bem-vindo de volta, {{ user.username }}!</h1>
 
         <section class="dashboard-widgets">
           <div class="card streak">
             <h3>🔥 Streak Atual</h3>
-            <p>7 dias seguidos</p>
+            <p>{{ streak_count }} dias</p>
           </div>
 
           <div class="card">
-            <h3>Hábitos de hoje</h3>
+            <h3>Seus hábitos</h3>
+            <p>Você tem {{ completed_habits_count }} hábitos concluídos.</p>
+            <p>Você tem {{ pending_habits_count }} hábitos pendentes.</p>
+            <p>Você tem {{ habits|length }} hábitos cadastrados.</p>
+
             <ul id="habitList">
-              <li class="habit done">✅ Acordar cedo</li>
-              <li class="habit">☐ Estudar 1h</li>
-              <li class="habit">☐ Beber água</li>
+            {% for habit in habits %}
+              <li class="habit">{{ habit.name }} {{ habit.status }} <button> Concluir </button> <button> Deletar </button> <button> <i class="fa-sharp fa-solid fa-pencil"></i> Editar </button></li>
+            {% endfor %}
+        
             </ul>
           </div>
         </section>
