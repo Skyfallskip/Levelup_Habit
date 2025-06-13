@@ -51,36 +51,46 @@
             <p>Você tem {{ completed_habits_count }} hábitos concluídos.</p>
             <p>Você tem {{ pending_habits_count }} hábitos pendentes.</p>
             <p>Você tem {{ habits|length }} hábitos cadastrados.</p>
-            <form id="funciona" method="POST">
+          
+             <button class="btnaddhabit" id="addHabitBtn">
+              <i class="fa-sharp fa-solid fa-plus"></i> Adicionar Hábito
+            </button>
+
+            <div class="AddNewHabitWrapper" id="AddNewHabitWrapper">
+              <form method="POST" id="NewHabitForm">
                 {% csrf_token %}
+                <span class="close-modal" id="closeNewHabit">&times;</span>
+                <h3>Adicionar Novo Hábito</h3>
+
                 <input 
                   type="text" 
-                  id="newHabitTitle" 
                   name="title"
                   placeholder="Título do hábito" 
                   required 
                   autocomplete="off"
                   autofocus
+                  id="newHabitTitle"
                 />
-                
+
                 <input 
                   type="text" 
-                  id="newHabitDescription" 
                   name="description"
                   placeholder="Descrição (opcional)" 
                   autocomplete="off"
+                  id="newHabitDescription"
                 />
-                
-                <select id="newHabitFrequency" name="frequency" required>
+
+                <select name="frequency" required id="newHabitFrequency">
                   <option value="" disabled selected>Frequência</option>
                   <option value="daily">Diário</option>
                   <option value="weekly">Semanal</option>
                   <option value="monthly">Mensal</option>
                 </select>
-                
-                <button type="submit">Adicionar Hábito</button>
-                
-            </form>
+
+                <button type="submit" class="Gambiarra">Adicionar Hábito</button>
+              </form>
+            </div>
+
 
 
                 <div id="habitList">
@@ -104,8 +114,8 @@
                     </div>
 
                     <div class="habit-actions">
-                      <button class="btn-complete">Concluir</button>
-                      <button class="btn-delete">Deletar</button>
+                      <button class="btn-complete"><i class="fa-sharp fa-solid fa-circle-check"></i> Concluir</button>
+                      <button class="btn-delete"><i class="fa-sharp fa-solid fa-trash"></i> Deletar</button>
                       <button class="btn-edit"><i class="fa-sharp fa-solid fa-pencil"></i> Editar</button>
                   </div>
                 </div>
@@ -156,6 +166,7 @@
     });
 
     // Verificar token no localStorage e redirecionar se não tiver
+    
     const token = localStorage.getItem('access_token');
     if (!token) {
       console.error('Token de acesso não encontrado. Redirecionando para login.');

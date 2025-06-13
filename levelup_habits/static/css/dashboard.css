@@ -363,3 +363,75 @@ form button:hover {
 .user-level-wrapper:hover .user-level {
   background-color: var(--highlight-hover);
 }
+
+
+div#habitList {
+    margin-top: 10px;
+}
+
+.btnaddhabit{
+  background-color: var(--highlight);
+  color: var(--bg-main);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.AddNewHabitWrapper {
+  position: fixed;
+  inset: 0;
+  display:flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 6rem; 
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.AddNewHabitWrapper.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.AddNewHabitWrapper form {
+  background-color: var(--bg-main);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  max-width: 500px;
+  position: relative;
+}
+
+.AddNewHabitWrapper h3 {
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.Gambiarra {
+  margin-top: 1rem;
+  background-color: var(--highlight);
+  color: var(--bg-main);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.Gambiarra:hover {
+  background-color: var(--highlight-hover);
+}
+
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}

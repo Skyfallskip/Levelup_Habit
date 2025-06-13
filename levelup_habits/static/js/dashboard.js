@@ -14,37 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${habit.title} ${habit.is_active ? 'Ativo' : 'Inativo'}`;
   }
 
-  // Cria um elemento <li> com os botões para um hábito
-  function createHabitListItem(habit) {
-    const li = document.createElement('li');
-    li.classList.add('habit');
-    li.dataset.id = habit.id;
 
-    // Span com texto título + status
-    const titleSpan = document.createElement('span');
-    titleSpan.textContent = habitText(habit) + ' ';
-    li.appendChild(titleSpan);
-
-    // Botão Concluir
-    const btnComplete = document.createElement('button');
-    btnComplete.textContent = 'Concluir';
-    btnComplete.classList.add('btn-complete');
-    li.appendChild(btnComplete);
-
-    // Botão Deletar
-    const btnDelete = document.createElement('button');
-    btnDelete.textContent = 'Deletar';
-    btnDelete.classList.add('btn-delete');
-    li.appendChild(btnDelete);
-
-    // Botão Editar (icone + texto)
-    const btnEdit = document.createElement('button');
-    btnEdit.innerHTML = '<i class="fa-sharp fa-solid fa-pencil"></i> Editar';
-    btnEdit.classList.add('btn-edit');
-    li.appendChild(btnEdit);
-
-    return li;
-  }
 
   // Atualiza o texto do hábito na lista (título + status)
   function updateHabitListItemText(habitId, habit) {
@@ -177,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Atualiza o texto do hábito na lista (mantém status atual)
       // Aqui idealmente a API deveria retornar o hábito atualizado completo,
-      // mas como não retorna, vamos buscar o is_active antigo:
+      // mas como não retorna (ainda nao implementei), vamos buscar o is_active antigo:
       const habitItem = habitList.querySelector(`.habit[data-id="${currentHabitId}"]`);
       const isActive = habitItem ? habitItem.textContent.includes('Ativo') : true; // fallback
       updateHabitListItemText(currentHabitId, { ...updatedData, is_active: isActive });
@@ -193,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Formulário criação ---
 
-  document.getElementById('funciona').addEventListener('submit', async (e) => {
+  document.getElementById('NewHabitForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const title = document.getElementById('newHabitTitle').value.trim();
@@ -240,25 +210,32 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    habitList.appendChild(div);
-    li.dataset.id = createdHabit.id;
-
-    // Colocar o título e os botões
-    li.innerHTML = `
-      <span>${createdHabit.title} </span>
-      <button class="btn-complete">Concluir</button>
-      <button class="btn-delete">Deletar</button>
-      <button class="btn-edit"><i class="fa fa-pencil"></i> Editar</button>
-    `;
-
     habitList.appendChild(li);
 
     e.target.reset(); // limpa o form
     alert('Hábito adicionado com sucesso! 🎉');
   } catch (error) {
     console.error(error);
-    alert('Erro ao adicionar hábito: ' + error.message);
+    //alert('Erro ao adicionar hábito: ' + error.message);
   }
 });
 
+});
+
+const btnNewHabit = document.getElementById('addHabitBtn');
+const newHabitModal = document.getElementById('AddNewHabitWrapper');
+const closeNewHabit = document.getElementById('closeNewHabit');
+
+btnNewHabit.addEventListener('click', () => {
+  newHabitModal.classList.add('show');
+});
+
+closeNewHabit.addEventListener('click', () => {
+  newHabitModal.classList.remove('show');
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === newHabitModal) {
+    newHabitModal.classList.remove('show');
+  }
 });
