@@ -1,0 +1,43 @@
+.error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  padding: 2rem;
+}
+
+.error-page h1 {
+  font-size: 6rem;
+  color: var(--highlight);
+  margin-bottom: 1rem;
+}
+
+.error-page p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+}
+
+.error-page a {
+  background-color: var(--highlight);
+  color: var(--bg-main);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.error-page a:hover {
+  background-color: var(--highlight-hover);
+}
+
+.error-icon {
+  font-size: 4rem;
+  color: var(--highlight-hover);
+  margin-bottom: 1rem;
+}
