@@ -1,0 +1,46 @@
+.config-section {
+  background-color: var(--bg-card);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  max-width: 1200px;
+  margin-top: 2rem;
+}
+
+.config-section h3 {
+  color: var(--highlight);
+  margin-bottom: 1rem;
+}
+
+.config-section label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: var(--text-muted);
+}
+
+.config-section input {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: none;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  margin-top: 0.5rem;
+}
+
+.config-section button {
+  margin-top: 1.5rem;
+  background-color: var(--highlight);
+  color: var(--bg-main);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.config-section button:hover {
+  background-color: var(--highlight-hover);
+}

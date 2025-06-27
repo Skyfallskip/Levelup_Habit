@@ -20,3 +20,13 @@ def dashboard_view(request):
         'xp': getattr(getattr(request.user, 'userprofile', None), 'xp', 0),
     }
     return render(request, 'home.html', context)
+
+def config_view(request):
+    if not request.user.is_authenticated:
+        return render(request, 'acess_denied.html', status=403)
+    context = {
+        'user': request.user,
+        'level': getattr(getattr(request.user, 'userprofile', None), 'level', 1),
+        'xp': getattr(getattr(request.user, 'userprofile', None), 'xp', 0),
+    }
+    return render(request, 'config.html', context)

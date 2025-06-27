@@ -15,9 +15,9 @@
       <h2 class="logo"><i class="fa-sharp fa-solid fa-angles-up"></i> LevelUp Habits</h2>
       <nav>
         <a href="#" class="active"><i class="fa-sharp fa-solid fa-house"></i> Início</a>
-        <a href="#"><i class="fa-sharp fa-solid fa-user-group"></i> Amigos - Em breve</a>
-        <a href="#"><i class="fa-sharp fa-solid fa-users"></i> Equipe - Em breve</a>
-        <a href="#"><i class="fa-sharp fa-solid fa-gear"></i> Configurações</a>
+        <!-- <a href="#"><i class="fa-sharp fa-solid fa-user-group"></i> Amigos - Em breve</a>
+        <a href="#"><i class="fa-sharp fa-solid fa-users"></i> Equipe - Em breve</a> -->
+        <a href="{% url 'config' %}"><i class="fa-sharp fa-solid fa-gear"></i> Configurações</a>
       </nav>
     </aside>
 
@@ -42,7 +42,7 @@
 
         <section class="dashboard-widgets">
           <div class="card streak">
-            <h3>🔥 Streak Atual</h3>
+            <h3><i class="fa-solid fa-fire"></i> Streak Atual</h3>
             <p>{{ streak_count }} dias</p>
           </div>
 
