@@ -8,8 +8,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-
-
+from django.contrib.auth import login
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -29,16 +30,7 @@ class RegisterView(APIView):
 
         return Response({'detail': 'Usuário criado com sucesso!'}, status=status.HTTP_201_CREATED)
 
-from django.contrib.auth import login
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import authenticate, login
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LoginView(APIView):

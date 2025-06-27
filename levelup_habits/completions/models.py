@@ -6,12 +6,12 @@ class Completion(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='completions'
+        related_name='completion_records'  # NOME ÚNICO
     )
     habit = models.ForeignKey(
         Habit,
         on_delete=models.CASCADE,
-        related_name='completions'
+        related_name='completion_entries'  # NOME ÚNICO
     )
     date = models.DateField()
 

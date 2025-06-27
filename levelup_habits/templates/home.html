@@ -15,9 +15,9 @@
       <h2 class="logo"><i class="fa-sharp fa-solid fa-angles-up"></i> LevelUp Habits</h2>
       <nav>
         <a href="#" class="active"><i class="fa-sharp fa-solid fa-house"></i> Início</a>
-        <a href="#"><i class="fa-sharp fa-solid fa-user-group"></i> Amigos - Soon</a>
-        <a href="#"><i class="fa-sharp fa-solid fa-users"></i> Equipe - Soon</a>
-        <a href="#"><i class="fa-sharp fa-solid fa-gear"></i> Configurações</a>
+        <!-- <a href="#"><i class="fa-sharp fa-solid fa-user-group"></i> Amigos - Em breve</a>
+        <a href="#"><i class="fa-sharp fa-solid fa-users"></i> Equipe - Em breve</a> -->
+        <a href="{% url 'config' %}"><i class="fa-sharp fa-solid fa-gear"></i> Configurações</a>
       </nav>
     </aside>
 
@@ -28,8 +28,12 @@
             <a href="#"><i class="fa-sharp fa-solid fa-bell"></i> Notificações</a>
             <a href="#"><i class="fa-sharp fa-solid fa-user"></i> Perfil</a>
             <img src="{% static 'images/placeholder.png' %}" alt="user_profile_picture" class="icon" />
-            <span class="username">{{ user.username }}</span>
-            <a href="{% url 'logout_view'%}" class="logout-btn">Sair</a>
+              <span class="username">{{ user.username }}</span>
+              <span class="user-level-wrapper">
+                <span class="user-level">Nível {{ level }}</span>
+                <span class="user-xp">XP: {{ xp }}</span>
+              </span>
+            <a href="{% url 'logout_view'%}" class="logout-btn" id="logoutBtn">Sair</a>
         </div>
       </header>
 
@@ -38,7 +42,7 @@
 
         <section class="dashboard-widgets">
           <div class="card streak">
-            <h3>🔥 Streak Atual</h3>
+            <h3><i class="fa-solid fa-fire"></i> Streak Atual</h3>
             <p>{{ streak_count }} dias</p>
           </div>
 
@@ -47,37 +51,127 @@
             <p>Você tem {{ completed_habits_count }} hábitos concluídos.</p>
             <p>Você tem {{ pending_habits_count }} hábitos pendentes.</p>
             <p>Você tem {{ habits|length }} hábitos cadastrados.</p>
+          
+             <button class="btnaddhabit" id="addHabitBtn">
+              <i class="fa-sharp fa-solid fa-plus"></i> Adicionar Hábito
+            </button>
 
-            <ul id="habitList">
-            {% for habit in habits %}
-              <li class="habit">{{ habit.name }} {{ habit.status }} <button> Concluir </button> <button> Deletar </button> <button> <i class="fa-sharp fa-solid fa-pencil"></i> Editar </button></li>
-            {% endfor %}
-        
-            </ul>
+            <div class="AddNewHabitWrapper" id="AddNewHabitWrapper">
+              <form method="POST" id="NewHabitForm">
+                {% csrf_token %}
+                <span class="close-modal" id="closeNewHabit">&times;</span>
+                <h3>Adicionar Novo Hábito</h3>
+
+                <input 
+                  type="text" 
+                  name="title"
+                  placeholder="Título do hábito" 
+                  required 
+                  autocomplete="off"
+                  autofocus
+                  id="newHabitTitle"
+                />
+
+                <input 
+                  type="text" 
+                  name="description"
+                  placeholder="Descrição (opcional)" 
+                  autocomplete="off"
+                  id="newHabitDescription"
+                />
+
+                <select name="frequency" required id="newHabitFrequency">
+                  <option value="" disabled selected>Frequência</option>
+                  <option value="daily">Diário</option>
+                  <option value="weekly">Semanal</option>
+                  <option value="monthly">Mensal</option>
+                </select>
+
+                <button type="submit" class="Gambiarra">Adicionar Hábito</button>
+              </form>
+            </div>
+
+
+
+                <div id="habitList">
+                  {% for habit in habits %}
+                  <div class="habit-card" data-id="{{ habit.id }}">
+                    <div class="habit-header">
+                      <strong>{{ habit.title }}</strong>
+                      <span class="habit-status">{{ habit.is_active|yesno:"Ativo,Inativo" }}</span>
+                    </div>
+
+                    {% if habit.description %}
+                      <p class="habit-description">{{ habit.description }}</p>
+                    {% endif %}
+
+                    <div class="habit-dates">
+                      <small>Criado: {{ habit.created_at|date:"d/m/Y H:i" }}</small>
+                      <small>Atualizado: {{ habit.updated_at|date:"d/m/Y H:i" }}</small>
+                      {% if habit.completed_at %}
+                        <small>Finalizado: {{ habit.completed_at|date:"d/m/Y H:i" }}</small>
+                      {% endif %}
+                    </div>
+
+                    <div class="habit-actions">
+                      <button class="btn-complete"><i class="fa-sharp fa-solid fa-circle-check"></i> Concluir</button>
+                      <button class="btn-delete"><i class="fa-sharp fa-solid fa-trash"></i> Deletar</button>
+                      <button class="btn-edit"><i class="fa-sharp fa-solid fa-pencil"></i> Editar</button>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
           </div>
         </section>
       </main>
     </div>
   </div>
 
-  <script src="{% static 'js/dashboard.js' %}">
-      document.getElementById('logoutBtn').addEventListener('click', function (e) {
+  <div id="editModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Editar Hábito</h2>
+      <form id="editHabitForm" method="POST">
+        {% csrf_token %}
+        <input type="hidden" id="habitId" name="id" />
+        <label for="habitTitle">Título:</label><br/>
+        <input type="text" id="habitTitle" name="title" required /><br/><br/>
+
+        <label for="habitDescription">Descrição:</label><br/>
+        <textarea id="habitDescription" name="description" rows="4"></textarea><br/><br/>
+
+        <label for="habitFrequency">Frequência:</label><br/>
+        <select id="habitFrequency" name="frequency">
+          <option value="daily">Diário</option>
+          <option value="weekly">Semanal</option>
+          <option value="monthly">Mensal</option>
+        </select><br/><br/>
+
+        <button type="submit">Salvar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="{% static 'js/dashboard.js' %}" defer></script>
+
+  <script>
+    // Logout via JS - removendo tokens e redirecionando
+    document.getElementById('logoutBtn').addEventListener('click', function (e) {
       e.preventDefault();
 
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
 
-    
       window.location.href = '/login/';
-      });
-      // Colocar em todas as paginas que precisam de autenticação
-      // Verifica se o token de acesso está presente no localStorage
-      // Se não estiver, redireciona para a página de login
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        window.location.href = '/login/';
-        console.error('Token de acesso não encontrado. Redirecionando para login.');
-      }
+    });
+
+    // Verificar token no localStorage e redirecionar se não tiver
+    
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      console.error('Token de acesso não encontrado. Redirecionando para login.');
+      window.location.href = '/login/';
+    }
   </script>
 </body>
 </html>

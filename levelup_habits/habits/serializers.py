@@ -5,8 +5,8 @@ from completions.models import Completion
 class HabitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Habit
-        fields = '__all__'
-        read_only_fields = ['user', 'created_at']
+        fields = ['id', 'title', 'description', 'frequency', 'xp_reward', 'is_active', 'created_at', 'xp']
+        read_only_fields = ['id', 'created_at']
         
 class CompletionSerializer(serializers.ModelSerializer):
     class Meta:

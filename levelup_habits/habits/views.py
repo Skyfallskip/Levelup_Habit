@@ -16,5 +16,11 @@ class HabitViewSet(viewsets.ModelViewSet):
 
 
 class CompletionViewSet(viewsets.ModelViewSet):
-    queryset = Completion.objects.all()
     serializer_class = CompletionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Completion.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
