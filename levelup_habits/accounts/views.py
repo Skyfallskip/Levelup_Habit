@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -43,11 +43,7 @@ class LoginView(APIView):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            login(request._request, user)  # Sessão (caso esteja usando isso)
-
-            # Gera tokens JWT
             refresh = RefreshToken.for_user(user)
-
             return Response({
                 "access": str(refresh.access_token),
                 "refresh": str(refresh)
@@ -67,3 +63,22 @@ def custom_login(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def edit(request, pk=None):
+    if request.method == 'POST':
+        user = User.objects.get(pk=pk) if pk else request.user
+        user.username = request.POST.get('username', user.username)
+        user.email = request.POST.get('email', user.email)
+
+        user.save()
+        return redirect('config')
+
+    return redirect('config')  # Redireciona para a página de config
+
+class DeleteuserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk=None):
+        user = User.objects.get(pk=pk) if pk else request.user
+        user.delete()
+        return Response({'detail': 'Usuário deletado com sucesso!'}, status=status.HTTP_204_NO_CONTENT)
