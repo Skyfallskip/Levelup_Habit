@@ -16,12 +16,14 @@
         <div class="container_outer">
             <div class="container_inner">
                 <h1>Login</h1>
-                <form id="loginForm">
+                <form id="loginForm" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
                     <label for="username">Usuário</label>
                     <input type="text" id="username" name="username" required />
                     <label for="password">Senha</label>
                     <input type="password" id="password" name="password" required />
                     <button type="submit">Entrar</button>
+                    {% if error %}<div class="error">{{ error }}</div>{% endif %}
                 </form>
                 <div class="register-link">
                     <span>Não tem conta?</span>
@@ -30,14 +32,6 @@
             </div>
         </div>
     </div>
-
 <script src="{% static 'js/login.js' %}"></script>
-<script>
-    const token = localStorage.getItem('access_token');
-    if (token) {
-        // Se o usuário já está logado, redireciona para a home
-        window.location.href = '/';
-    }
-</script>
 </body>
 </html>

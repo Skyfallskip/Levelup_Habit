@@ -15,11 +15,11 @@ API REST para integração futura com apps e frontends mais complexos
 
 Sistema gamificado, com níveis, conquistas e um leaderboard ( quantidade de hábitos completos )
 
-Sistema de chat entre grupos e amigos
+Futuramente Sistema de chat entre grupos e amigos
 
-Sistema de grupos, permitindo que você e amigos completem hábitos juntos
+Futuramente Sistema de grupos, permitindo que você e amigos completem hábitos juntos
 
-Sistema de amizades, você pode comparar os seus status e conquistas com seus amigos
+Futuramente Sistema de amizades, você pode comparar os seus status e conquistas com seus amigos
 
 - Tecnologias usadas
   

@@ -29,6 +29,12 @@
   margin-top: 0.5rem;
 }
 
+#deleteAccountBtn {
+  background-color: #e53935 !important;
+  color: var(--bg-main);
+  margin-top: 1rem;
+}
+
 .config-section button {
   margin-top: 1.5rem;
   background-color: var(--highlight);
@@ -44,3 +50,4 @@
 .config-section button:hover {
   background-color: var(--highlight-hover);
 }
+
