@@ -25,7 +25,7 @@
       <header class="topbar">
         <div class="user-actions">
           <a href="#"><i class="fa-sharp fa-solid fa-bell"></i> Notificações</a>
-          <a href="#"><i class="fa-sharp fa-solid fa-user"></i> Perfil</a>
+          <a href="{% url 'perfil' %}"><i class="fa-sharp fa-solid fa-user"></i> Perfil</a>
           <img src="{% static 'images/placeholder.png' %}" alt="user_profile_picture" class="icon" />
           <span class="username">{{ user.username }}</span>
                         <span class="user-level-wrapper">
