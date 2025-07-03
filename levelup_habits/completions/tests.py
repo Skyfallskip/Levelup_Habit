@@ -13,14 +13,7 @@ class CompletionTests(APITestCase):
         cls.user = User.objects.create_user(username='testuser', password='12345678')
 
     def setUp(self):
-        # Obtem token JWT
-        response = self.client.post(reverse('token_obtain_pair'), {
-            'username': 'testuser',
-            'password': '12345678'
-        }, format='json')
-        self.token = response.data['access']
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
-
+        self.client.force_login(self.user)
         # Cria um hábito pra usar nos testes
         self.habit = Habit.objects.create(
             user=self.user,
@@ -29,12 +22,11 @@ class CompletionTests(APITestCase):
             xp_reward=10,
             is_active=True
         )
-
         # Dados padrão para criação
         self.completion_data = {
             "habit": self.habit.id,
             "date": date.today().isoformat(),
-            "user": self.user.id  # pode ou não ser necessário dependendo do serializer
+            "user": self.user.id
         }
 
     def test_create_completion(self):

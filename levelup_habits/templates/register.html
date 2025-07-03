@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cadastro - Habit Tracker</title>
   <link rel="stylesheet" href="{% static 'css/register.css' %}" />
+  <link rel="icon" href="{% static 'images/favicon.ico' %}">
+
 </head>
 <body>
   <div class="main-grid">
@@ -13,14 +15,13 @@
       <div class="info-content">
         <h1>Level Up Habits</h1>
         <p>Transforme seus hábitos, evolua todos os dias.</p>
-        <img src="{% static 'images/placeholder.png' %}" alt="Ilustração hábitos" />
       </div>
     </div>
 
     <div class="form-column">
       <div class="container_inner">
         <h2>Cadastro</h2>
-        <form id="registerForm" method="post" action="{% url 'api-register' %}">
+        <form id="registerForm" method="post" action="{% url 'register' %}">
           {% csrf_token %}
           <label for="username">Usuário</label>
           <input type="text" id="username" name="username" required />

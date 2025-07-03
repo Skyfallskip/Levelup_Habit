@@ -51,18 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
     submitButton.disabled = true;
 
     try {
-      const response = await fetch('/api/accounts/signup/', {
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('confirm_password', confirmPassword);
+
+      const response = await fetch('/accounts/register/', {
         method: 'POST',
+        body: formData,
         headers: {
-          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
         },
-        body: JSON.stringify({ username, email, password }),
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Erro da API:', errorData);
-        showAlert(errorData.detail || 'Erro ao registrar, verifique os dados.');
+        const errorText = await response.text();
+        showAlert('Erro ao registrar, verifique os dados.');
         submitButton.disabled = false;
         return;
       }

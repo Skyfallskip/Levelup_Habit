@@ -7,20 +7,25 @@
     <title>Perfil - Level Up Habits</title>
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+
+
 </head>
 <body>
     <div class="dashboard">
         <aside class="sidebar">
             <h2 class="logo"><i class="fa-sharp fa-solid fa-angles-up"></i> LevelUp Habits</h2>
             <nav>
-                <a href="/" ><i class="fa-sharp fa-solid fa-house"></i> Início</a>
+                <a href="/"><i class="fa-sharp fa-solid fa-house"></i> Início</a>
                 <a href="{% url 'config' %}"><i class="fa-sharp fa-solid fa-gear"></i> Configurações</a>
             </nav>
         </aside>
         <div class="main-area">
             <header class="topbar">
                 <div class="user-actions">
-                    <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="user_profile_picture" class="icon profile-pic" id="profilePicPreview" />
+                    <a href="{% url 'perfil' %}" class="active"><i class="fa-sharp fa-solid fa-user"></i> Perfil</a>
+                    <img src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="user_profile_picture" class="icon profile-pic" id="profilePicPreview" />
                     <span class="username">{{ user.username }}</span>
                     <form action="{% url 'logout_view' %}" method="post" style="display:inline;">
                         {% csrf_token %}
@@ -29,21 +34,24 @@
                 </div>
             </header>
             <main class="main-content">
-                <h1>Perfil de {{ user.username }}</h1>
+                <h1><i class="fa-sharp fa-solid fa-user"></i> Perfil de {{ user.username }}</h1>
                 <div class="card">
-                    <h3>Informações do Usuário</h3>
+                    <h3><i class="fa-solid fa-id-card"></i> Informações do Usuário</h3>
                     <div class="perfil-container">
-                        <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="Foto de perfil" class="profile-pic-large" id="profilePicLargePreview" />
+                        <img src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="Foto de perfil" class="profile-pic-large" id="profilePicLargePreview" />
                         <div class="perfil-info">
                             <p><strong>Nome de usuário:</strong> {{ user.username }}</p>
                             <p><strong>Email:</strong> {{ user.email }}</p>
                             <p><strong>Data de cadastro:</strong> {{ user.date_joined|date:"d/m/Y H:i" }}</p>
+                            <p><strong>Nível:</strong> {{ level }}</p>
+                            <p><strong>XP:</strong> {{ xp }}</p>
+                            <p><strong>Streak Atual:</strong> {{ streak_count }} {% if streak_count > 0 %} dias {% else %} 0 {%endif%}</p
                         </div>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Editar Perfil</h3>
-                    <form id="useredit" method="post" action="{% url 'edit_user' %}" enctype="multipart/form-data">
+                    <h3><i class="fa-solid fa-pen-to-square"></i> Editar Perfil</h3>
+                    <form method="post" enctype="multipart/form-data" action="{% url 'edit_user' %}">
                         {% csrf_token %}
                         <label for="username">Nome de usuário:</label>
                         <input type="text" id="username" name="username" value="{{ user.username }}" required>
@@ -52,12 +60,14 @@
                         <label for="profile_picture">Foto de perfil:</label>
                         <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
                         <img id="profilePicEditPreview" class="profile-pic-preview" style="display:none;max-width:120px;margin:10px 0;" />
-                        <button type="submit">Salvar Alterações</button>
+                        <button type="submit"><i class="fa-solid fa-floppy-disk"></i> Salvar Alterações</button>
                     </form>
                 </div>
                 <div class="card">
-                    <h3>Excluir Conta</h3>
-                    <button id="deleteAccountBtn" style="background:#e74c3c;color:white;">Excluir minha conta</button>
+                    <h3><i class="fa-solid fa-user-xmark"></i> Excluir Conta</h3>
+                    <button id="deleteAccountBtn" style="background:#e74c3c;color:white;">
+                        <i class="fa-solid fa-trash"></i> Excluir minha conta
+                    </button>
                 </div>
             </main>
         </div>

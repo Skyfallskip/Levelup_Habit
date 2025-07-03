@@ -13,13 +13,7 @@ class HabitTests(APITestCase):
         cls.user = User.objects.create_user(username='testuser', password='12345678')
 
     def setUp(self):
-        response = self.client.post(reverse('token_obtain_pair'), {
-            'username': 'testuser',
-            'password': '12345678'
-        }, format='json')
-
-        self.token = response.data['access']
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
+        self.client.force_login(self.user)
         self.habit_data = {
             'title': 'Ler livros',
             'description': 'Ler 30 minutos',
@@ -68,10 +62,11 @@ class HabitTests(APITestCase):
         self.assertEqual(Habit.objects.count(), 0)
 
     def test_create_habit_without_auth(self):
-        self.client.credentials()  # Remove o token
+        self.client.logout()  # Remove autenticação de sessão
         url = reverse('habit-list')
         response = self.client.post(url, self.habit_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        # O SessionAuthentication retorna 403 para requests sem CSRF, e 403 para não autenticado
+        self.assertIn(response.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
 
 class CompletionTests(APITestCase):
@@ -81,14 +76,7 @@ class CompletionTests(APITestCase):
         cls.user = User.objects.create_user(username='testuser', password='12345678')
 
     def setUp(self):
-        response = self.client.post(reverse('token_obtain_pair'), {
-            'username': 'testuser',
-            'password': '12345678'
-        }, format='json')
-
-        self.token = response.data['access']
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.token)
-
+        self.client.force_login(self.user)
         self.habit = Habit.objects.create(
             user=self.user,
             title='Ler livros',
@@ -121,21 +109,4 @@ class AuthTests(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='12345678')
 
-    def test_obtain_token(self):
-        url = reverse('token_obtain_pair')
-        data = {'username': 'testuser', 'password': '12345678'}
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('access', response.data)
-        self.assertIn('refresh', response.data)
-
-    def test_access_protected_endpoint_without_token(self):
-        url = reverse('habit-list')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_access_protected_endpoint_with_invalid_token(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer invalidtoken')
-        url = reverse('habit-list')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    # Removido: testes de JWT/token, pois agora usamos autenticação por sessão
