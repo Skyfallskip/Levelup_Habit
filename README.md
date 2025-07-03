@@ -23,7 +23,7 @@ Futuramente Sistema de amizades, você pode comparar os seus status e conquistas
 
 - Tecnologias usadas
   
-Backend: Django + Django REST Framework
+Backend: Django
 
 Frontend: HTML, CSS (tema dark), JavaScript puro
 
