@@ -22,92 +22,37 @@ class Habit(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     xp = models.PositiveIntegerField(default=10)
-    completed = models.BooleanField(default=False)
     streak = models.PositiveIntegerField(default=0)
-    last_completed_at = models.DateTimeField(null=True, blank=True)
-    
-    completions = models.ManyToManyField(
-        User,
-        through='HabitCompletion',
-        related_name='habits_completed',  # ajustado para evitar conflito
-        blank=True
-    )
 
     def __str__(self):
         return self.title
 
 
-class HabitCompletion(models.Model):
-    habit = models.ForeignKey(Habit, on_delete=models.CASCADE, related_name='habit_completions')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='habit_completion_records')
-    completed_at = models.DateTimeField(null=True, blank=True)  # Permite setar manualmente no save
-    streak = models.PositiveIntegerField(default=0)
+def count_pending_habits(user):
+    from django.utils import timezone
+    from completions.models import Completion
+    today = timezone.now().date()
+    habits = Habit.objects.filter(user=user, is_active=True)
+    completed_ids = set(
+        Completion.objects.filter(user=user, date=today)
+        .values_list('habit_id', flat=True)
+    )
+    pending_habits_count = habits.exclude(id__in=completed_ids).count()
+    completed_habits_count = len(completed_ids)
+    return pending_habits_count
 
-    class Meta:
-        unique_together = ('habit', 'user', 'completed_at')
-
-    def __str__(self):
-        return f"{self.habit.title} ({self.user.username})"
-
-    def is_completed_today(self):
-        today = timezone.now().date()
-        return HabitCompletion.objects.filter(
-            habit=self.habit,
-            user=self.user,
+def count_completed_habits(user):
+    from django.utils import timezone
+    from completions.models import Completion
+    today = timezone.now().date()
+    habits = Habit.objects.filter(user=user, is_active=True)
+    concluidos = 0
+    for habit in habits:
+        completed_today = Completion.objects.filter(
+            habit=habit,
+            user=user,
             completed_at__date=today
         ).exists()
-
-    def update_streak(self):
-        today = timezone.now().date()
-        # Busca a última conclusão antes de hoje
-        last_completion = HabitCompletion.objects.filter(
-            habit=self.habit,
-            user=self.user,
-            completed_at__lt=timezone.now()
-        ).order_by('-completed_at').first()
-
-        if last_completion:
-            last_completion_date = last_completion.completed_at.date()
-            if (today - last_completion_date).days == 1:
-                self.streak = last_completion.streak + 1
-            else:
-                self.streak = 1
-        else:
-            self.streak = 1
-
-    def save(self, *args, **kwargs):
-        if not self.completed_at:
-            self.completed_at = timezone.now()
-        self.update_streak()
-        super().save(*args, **kwargs)
-
-    # Métodos auxiliares para acessar dados relacionados (opcional)
-    def get_xp_reward(self):
-        return self.habit.xp_reward
-
-    def get_frequency(self):
-        return self.habit.frequency
-
-    def get_description(self):
-        return self.habit.description
-
-    def get_title(self):
-        return self.habit.title
-
-    def get_created_at(self):
-        return self.habit.created_at
-
-    def get_is_active(self):
-        return self.habit.is_active
-
-    def get_xp(self):
-        return self.habit.xp
-
-    def get_completed(self):
-        return self.habit.completed
-
-    def get_last_completed_at(self):
-        return self.habit.last_completed_at
-
-    def get_user_habit_completions(self):
-        return self.user.habit_completion_records.filter(habit=self.habit)
+        if completed_today:
+            concluidos += 1
+    return concluidos

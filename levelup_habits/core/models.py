@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -10,6 +11,7 @@ class UserProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
+    settings.AUTH_USER_MODEL,
 
     def __str__(self):
         return f"{self.nickname or self.user.username} - Level {self.level} - XP {self.xp}"

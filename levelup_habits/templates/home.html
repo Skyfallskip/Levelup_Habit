@@ -7,6 +7,7 @@
   <title>Dashboard - Level Up Habits</title>
   <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" href="{% static 'images/favicon.ico' %}">
 </head>
 <body>
   <div class="dashboard">
@@ -25,9 +26,9 @@
 
       <header class="topbar">
         <div class="user-actions">
-            <a href="#"><i class="fa-sharp fa-solid fa-bell"></i> Notificações</a>
+            <!-- <a href="#"><i class="fa-sharp fa-solid fa-bell"></i> Notificações</a> -->
             <a href="{% url 'perfil' %}"><i class="fa-sharp fa-solid fa-user"></i> Perfil</a>
-            <img src="{% static 'images/placeholder.png' %}" alt="user_profile_picture" class="icon" />
+            <img src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}" alt="user_profile_picture" class="icon" />
               <span class="username">{{ user.username }}</span>
               <span class="user-level-wrapper">
                 <span class="user-level">Nível {{ level }}</span>
@@ -51,75 +52,38 @@
 
           <div class="card">
             <h3>Seus hábitos</h3>
-            <p>Você tem {{ completed_habits_count }} hábitos concluídos.</p>
-            <p>Você tem {{ pending_habits_count }} hábitos pendentes.</p>
-            <p>Você tem {{ habits|length }} hábitos cadastrados.</p>
-          
-             <button class="btnaddhabit" id="addHabitBtn">
+            <div class="habit-stats">
+              <span class="stat stat-completed">
+                <i class="fa-solid fa-circle-check"></i>
+                <strong>{{ completed_habits_count }}</strong> concluído{{ completed_habits_count|pluralize }}
+              </span>
+              <span class="stat stat-pending">
+                <i class="fa-solid fa-hourglass-half"></i>
+                <strong>{{ pending_habits_count }}</strong> pendente{{ pending_habits_count|pluralize }}
+              </span>
+              <span class="stat stat-total">
+                <i class="fa-solid fa-list"></i>
+                <strong>{{ habits|length }}</strong> cadastrados
+              </span>
+            </div>
+            <button class="btnaddhabit" id="addHabitBtn">
               <i class="fa-sharp fa-solid fa-plus"></i> Adicionar Hábito
             </button>
-
-            <div class="AddNewHabitWrapper" id="AddNewHabitWrapper">
-              <form method="POST" id="NewHabitForm">
-                {% csrf_token %}
-                <span class="close-modal" id="closeNewHabit">&times;</span>
-                <h3>Adicionar Novo Hábito</h3>
-
-                <input 
-                  type="text" 
-                  name="title"
-                  placeholder="Título do hábito" 
-                  required 
-                  autocomplete="off"
-                  autofocus
-                  id="newHabitTitle"
-                />
-
-                <input 
-                  type="text" 
-                  name="description"
-                  placeholder="Descrição (opcional)" 
-                  autocomplete="off"
-                  id="newHabitDescription"
-                />
-
-                <select name="frequency" required id="newHabitFrequency">
-                  <option value="" disabled selected>Frequência</option>
-                  <option value="daily">Diário</option>
-                  <option value="weekly">Semanal</option>
-                  <option value="monthly">Mensal</option>
-                </select>
-
-                <button type="submit" class="Gambiarra">Adicionar Hábito</button>
-              </form>
-            </div>
-
-
-
-                <div id="habitList">
-                  {% for habit in habits %}
-                  <div class="habit-card" data-id="{{ habit.id }}">
-                    <div class="habit-header">
-                      <strong>{{ habit.title }}</strong>
-                      <span class="habit-status">{{ habit.is_active|yesno:"Ativo,Inativo" }}</span>
-                    </div>
-
-                    {% if habit.description %}
-                      <p class="habit-description">{{ habit.description }}</p>
+            <div id="habitList">
+              {% for habit in habits %}
+                <div class="habit-card{% if habit.id in completed_habits_ids %} done{% endif %}" data-id="{{ habit.id }}">
+                  <div class="habit-header">
+                    <strong>{{ habit.title }}</strong>
+                    <span class="habit-status">{{ habit.is_active|yesno:"Ativo,Inativo" }}</span>
+                  </div>
+                  <div class="habit-actions">
+                    {% if habit.id not in completed_habits_ids %}
+                      <button class="btn-complete" title="Concluir"><i class="fa-solid fa-circle-check"></i></button>
+                    {% else %}
+                      <!-- Hábito concluído hoje -->
                     {% endif %}
-
-                    <div class="habit-dates">
-                      <small>Criado: {{ habit.created_at|date:"d/m/Y H:i" }}</small>
-                      <small>Atualizado: {{ habit.updated_at|date:"d/m/Y H:i" }}</small>
-                      {% if habit.completed_at %}
-                        <small>Finalizado: {{ habit.completed_at|date:"d/m/Y H:i" }}</small>
-                      {% endif %}
-                    </div>
-
-                    <div class="habit-actions">
-                      <button class="btn-complete"><i class="fa-sharp fa-solid fa-circle-check"></i> Concluir</button>
-                      <button class="btn-delete"><i class="fa-sharp fa-solid fa-trash"></i> Deletar</button>
-                      <button class="btn-edit"><i class="fa-sharp fa-solid fa-pencil"></i> Editar</button>
+                    <button class="btn-delete" title="Deletar"><i class="fa-solid fa-trash"></i></button>
+                    <button class="btn-edit" title="Editar"><i class="fa-sharp fa-solid fa-pencil"></i></button>
                   </div>
                 </div>
               {% endfor %}
@@ -153,6 +117,38 @@
         <button type="submit">Salvar</button>
       </form>
     </div>
+  </div>
+
+  <!-- Mova a AddNewHabitWrapper para cá, fora do card -->
+  <div class="AddNewHabitWrapper" id="AddNewHabitWrapper">
+    <form method="POST" id="NewHabitForm">
+      {% csrf_token %}
+      <span class="close-modal" id="closeNewHabit">&times;</span>
+      <h3>Adicionar Novo Hábito</h3>
+      <input 
+        type="text" 
+        name="title"
+        placeholder="Título do hábito" 
+        required 
+        autocomplete="off"
+        autofocus
+        id="newHabitTitle"
+      />
+      <input 
+        type="text" 
+        name="description"
+        placeholder="Descrição (opcional)" 
+        autocomplete="off"
+        id="newHabitDescription"
+      />
+      <select name="frequency" required id="newHabitFrequency">
+        <option value="" disabled selected>Frequência</option>
+        <option value="daily">Diário</option>
+        <option value="weekly">Semanal</option>
+        <option value="monthly">Mensal</option>
+      </select>
+      <button type="submit" class="Gambiarra">Adicionar Hábito</button>
+    </form>
   </div>
 
   <script src="{% static 'js/dashboard.js' %}" defer></script>

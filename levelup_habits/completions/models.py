@@ -8,12 +8,10 @@ class Completion(models.Model):
         on_delete=models.CASCADE,
         related_name='completion_records'  # NOME ÚNICO
     )
-    habit = models.ForeignKey(
-        Habit,
-        on_delete=models.CASCADE,
-        related_name='completion_entries'  # NOME ÚNICO
-    )
+    habit = models.ForeignKey('habits.Habit', on_delete=models.CASCADE)
     date = models.DateField()
+    completed_at = models.DateTimeField(null=True, blank=True)
+    streak = models.PositiveIntegerField(default=0)
 
     class Meta:
         unique_together = ('user', 'habit', 'date')

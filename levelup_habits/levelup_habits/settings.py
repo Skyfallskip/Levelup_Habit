@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'core',
     'habits',
     'completions',
-    'stats',
     'accounts',
     
 ]
@@ -164,28 +163,10 @@ CSRF_TRUSTED_ORIGINS = [
     'https://cuddly-fortnight-v6g4g6wgp95gfp59g-8000.app.github.dev',
 ]
 
-# Cookie settings para JWT (opcional, se usar cookies)
+# Segurança de cookies para produção
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
-
-# Logging para debug de JWT
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'rest_framework_simplejwt': {
-            'handlers': ['console'],
-            'level': 'DEBUG' if DEBUG else 'INFO',
-            'propagate': True,
-        },
-    },
-}
