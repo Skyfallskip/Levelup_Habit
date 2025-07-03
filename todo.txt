@@ -1,12 +1,8 @@
---> Principal
-
-- Dashboard ( home page )
-- Perfil
-- Configurações
-
 --> Extra
 
 - Funcionalidades:
+
+Sistema de esqueceu a senha
 
 Criar equipes/grupos — cada time tem um nome, descrição, talvez uma imagem/avatar.
 
