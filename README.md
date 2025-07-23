@@ -1,6 +1,8 @@
 #LevelUp Habit
 LevelUp Habit é um aplicativo web para você monitorar seus hábitos e melhorar sua produtividade de forma simples, leve e eficiente. Feito com Django no backend e um frontend minimalista em HTML, CSS e JavaScript, o projeto é ideal para quem quer praticidade sem abrir mão do controle.
 
+# Discontinuado Temporariamente
+
 - Funcionalidades
   
 Cadastro e login de usuários
